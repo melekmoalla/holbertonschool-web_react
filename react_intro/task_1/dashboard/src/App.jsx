@@ -22,8 +22,7 @@ function App() {
 
         <footer className="App-footer">
         <div className="long-br"></div>
-        <p>{getFooterCopy(true)}</p>
-        <p>{getCurrentYear()}</p>
+        <p>Copyright {getCurrentYear()} {getFooterCopy(true)}</p>
         </footer>
       </div>
   );
