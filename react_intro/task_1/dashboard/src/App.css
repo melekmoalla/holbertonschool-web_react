@@ -1,0 +1,42 @@
+.App-header {
+  display: flex;
+  align-items: center;
+}
+/* task_1/dashboard/src/Notifications.css */
+
+.notifications {
+  border: 3px dotted #ff0000;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.App-header img {
+  margin-right: 10px;
+}
+
+.App-header h1 {
+  color: #e1003c;
+}
+
+
+.App-body {
+  margin-top: 20px;
+}
+
+.long-br {
+  border-top: 1px solid red;
+  margin-bottom: 20px;
+}
+
+.App-footer {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 12px;
+  color: gray;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px 0;
+}
+
