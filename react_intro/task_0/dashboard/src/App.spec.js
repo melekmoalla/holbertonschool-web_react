@@ -14,7 +14,7 @@ test('Write a test to check that the text content within the 2 p elements in the
     
     // Update the expected text to match what is in the component
     const bodyText = screen.getByText("Login to access the full dashboard"); 
-    const footerText = screen.getByText("Copyright 2024 - Holberton School");
+    const footerText = screen.getByText("Copyright 2024 - holberton School");
   
     expect(bodyText).toBeInTheDocument();
     expect(footerText).toBeInTheDocument();
