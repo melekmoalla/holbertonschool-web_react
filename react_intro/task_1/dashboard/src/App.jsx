@@ -18,17 +18,11 @@ function App() {
       <div className="App-body">
         <div className="long-br"></div>
           <p>Login to access the full dashboard</p>
-          <form>
-          <div className="form-group">
             <label htmlFor="email">Email:</label>
             <input type="email" id="email" name="email" />
-          </div>
-          <div className="form-group">
             <label htmlFor="password">Password:</label>
             <input type="password" id="password" name="password" />
-          </div>
           <button type="submit">OK</button>
-        </form>
         </div>
 
         <footer className="App-footer">
