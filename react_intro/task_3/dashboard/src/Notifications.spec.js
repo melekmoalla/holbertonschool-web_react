@@ -17,11 +17,11 @@ test('renders the close button', () => {
 test('renders three notification items', () => {
     render(<Notifications />);
     const listItems = screen.getAllByRole('listitem');
-    expect(listItems.length).toBe(3)
-});
+    expect(listItems).toHaveLength(3);
+  });
 
 test('logs message when close button is clicked', () => {
-    console.log = jest.fn(); // Mock console.log
+    console.log = jest.fn();
 
     render(<Notifications />);
     const buttonElement = screen.getByRole('button', { name: /close/i });
