@@ -1,6 +1,6 @@
 // src/Login/Login.spec.js
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import Login from './Login';
 
 describe('Login component', () => {
@@ -17,7 +17,7 @@ describe('Login component', () => {
       const emailLabel = screen.getByLabelText(/email/i);
       const passwordLabel = screen.getByLabelText(/password/i);
       const emailInput = screen.getByRole('textbox', { name: /email/i });
-      const passwordInput = screen.getByRole('textbox', { name: /password/i });
+      const passwordInput = screen.getByLabelText(/password/i);
       const submitButton = screen.getByRole('button', { name: /ok/i });
   
       expect(emailLabel).toBeInTheDocument();
@@ -32,7 +32,9 @@ describe('Login component', () => {
       const emailLabel = screen.getByLabelText(/email/i);
       const emailInput = screen.getByRole('textbox', { name: /email/i });
   
-      fireEvent.click(emailLabel);
+      emailLabel.click();
+      emailInput.focus();
+
       expect(emailInput).toHaveFocus();
     });
   

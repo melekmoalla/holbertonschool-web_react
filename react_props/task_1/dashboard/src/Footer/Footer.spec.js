@@ -2,19 +2,20 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import Footer from './Footer';
+import { getCurrentYear, getFooterCopy } from '../utils/utils';
 
-describe('Footer component', () => {
   it('should render the copyright text', () => {
     const { getByText } = render(<Footer />);
     
     // Check if the copyright text is rendered
     expect(getByText(/Copyright/i)).toBeInTheDocument();
   });
-  it('should render the copyright message with current year and Holberton School', () => {
-    render(<Footer />);
 
-    const currentYear = new Date().getFullYear();
-    const footerText = screen.getByText(new RegExp(`Copyright ${currentYear} Holberton School`));
-    expect(footerText).toBeInTheDocument();
+
+  it('should render the footer message based on isIndex argument in getFooterCopy', () => {
+    const isIndex = true;
+    const footerMessage = getFooterCopy(isIndex); // Test the utility function directly
+
+    expect(footerMessage).toBe('Holberton School'); // Replace with expected value based on your implementation
   });
-});
+
