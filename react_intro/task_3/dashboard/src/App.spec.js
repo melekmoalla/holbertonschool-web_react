@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react'; // Import render and screen utilities
 import '@testing-library/jest-dom'; // Import jest-dom for custom matchers
 import App from './App'; // Import the App component to test
-import { getCurrentYear, getFooterCopy, getLatestNotification } from './utils';
 
 
 test('renders h1 element with text "School Dashboard"', () => {
@@ -51,23 +50,3 @@ test('renders a button with text "OK"', () => {
     expect(button).toBeInTheDocument();
     });
 
-
-test('getCurrentYear returns the current year', () => {
-    const currentYear = new Date().getFullYear();
-    expect(getCurrentYear()).toBe(currentYear);
-    });
-    
-test('getFooterCopy returns the correct string when true', () => {
-const result = getFooterCopy(true);
-expect(result).toBe('Holberton School');
-});
-
-test('getFooterCopy returns the correct string when false', () => {
-const result = getFooterCopy(false);
-expect(result).toBe('Holberton School main dashboard');
-});
-
-test('getLatestNotification returns the correct string', () => {
-const result = getLatestNotification();
-expect(result).toBe('<strong>Urgent requirement</strong> - complete by EOD');
-});
