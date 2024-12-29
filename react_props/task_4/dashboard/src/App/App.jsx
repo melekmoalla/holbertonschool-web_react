@@ -19,7 +19,7 @@ const coursesList = [
 ];
 
 function App() {
-  const isLoggedIn = true; // Change this to true for testing CourseList rendering
+  const isLoggedIn = false; // Change this to true for testing CourseList rendering
 
   return (
     <Fragment>
