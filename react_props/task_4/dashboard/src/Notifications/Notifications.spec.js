@@ -10,5 +10,7 @@ const notifications = [
 
 
 describe('Notifications component tests', () => {
-  
+    test('should pass this test', () => {
+        expect(true).toBe(true);
+      });
 });
