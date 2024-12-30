@@ -3,13 +3,14 @@ import { render, screen } from '@testing-library/react';
 import CourseListRow from './CourseListRow';
 
 describe('test compnement',() =>{
-    it('renders a single column header with colSpan=2 when isHeader is true and textSecondCell is null', () => {
-        render(<CourseListRow isHeader={true} textFirstCell="Test Header" />);
+
+
+      it('renders a single column header with colSpan=2 when isHeader is true and textSecondCell is null', () => {
+        const { container } = render(<CourseListRow isHeader={true} textFirstCell="Test Header"/>);
         const thElement = screen.getByText('Test Header');
-        expect(thElement).toBeInTheDocument();
         expect(thElement).toHaveAttribute('colSpan', '2');
       });
-    
+
       it('renders two column headers when isHeader is true and textSecondCell is not null', () => {
         render(<CourseListRow isHeader={true} textFirstCell="Header1" textSecondCell="Header2" />);
         expect(screen.getByText('Header1')).toBeInTheDocument();
