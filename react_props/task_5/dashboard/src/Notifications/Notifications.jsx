@@ -3,50 +3,50 @@ import PropTypes from 'prop-types';
 import closeIcon from '../assets/close-button.png';
 import NotificationItem from './NotificationItem';
 
-function Notifications({ notifications }) {
+function Notifications({ displayDrawer, notifications }) {
   const handleClick = () => {
     console.log('Close button has been clicked');
   };
 
   return (
-    <div className="notifications">
+    <>
       <div className="notifications-title">Your Notifications</div>
       {displayDrawer && (
-        notifications.length === 0 ? (
-          <p>No new notifications for now</p>
-        ) : (
-            <p>Here is the list of notifications</p>
-            <ul>
-              {Array.isArray(notifications) && notifications.length > 0 ? (
-                notifications.map((item) => (
+        <div className="notifications">
+          {notifications.length === 0 ? (
+            <p>No new notifications for now</p>
+          ) : (
+            <>
+              <p>Here is the list of notifications</p>
+              <ul>
+                {notifications.map((item) => (
                   <NotificationItem
                     key={item.id}
                     type={item.type}
                     value={item.value}
                     html={item.html}
                   />
-                ))
-              ) : (
-                <li>No notifications available</li>
-              )}
-            </ul>
-        )
+                ))}
+              </ul>
+            </>
+          )}
+          <button
+            style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+            }}
+            aria-label="Close"
+            onClick={handleClick}
+          >
+            <img src={closeIcon} alt="Close icon" style={{ width: '10px', height: '10px' }} />
+          </button>
+        </div>
       )}
-      <button
-        style={{
-          position: 'absolute',
-          top: '10px',
-          right: '10px',  
-          background: 'transparent',
-          border: 'none',
-          cursor: 'pointer',
-        }}
-        aria-label="Close"
-        onClick={handleClick}
-      >
-        <img src={closeIcon} alt="Close icon" style={{ width: '10px', height: '10px' }} />
-      </button>
-    </div>
+    </>
   );
 }
 
