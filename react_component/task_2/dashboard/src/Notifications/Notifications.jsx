@@ -33,15 +33,18 @@ class Notifications extends Component {
               <>
                 <p>Here is the list of notifications</p>
                 <ul>
-                  {notifications.map((item) => (
-                    <NotificationItem
-                    key={item.id}
-                    type={item.type}
-                    value={item.value}
-                    html={item.html}
-                    markAsRead={this.markAsRead}
-                  />
-                  ))}
+                  {notifications.map((item) => {
+                    return (
+                      <NotificationItem
+                        key={item.id}
+                        type={item.type}
+                        value={item.value}
+                        html={item.html}
+                        id={item.id} 
+                        markAsRead={this.markAsRead}
+                      />
+                    );
+                  })}
                 </ul>
               </>
             )}
