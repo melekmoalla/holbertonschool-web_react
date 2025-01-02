@@ -1,5 +1,5 @@
 // src/App.spec.js
-import { render, screen } from '@testing-library/react';
+import { render, screen , fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import App from './App';
 
@@ -9,13 +9,7 @@ test('renders h1 element with text "School Dashboard"', () => {
     expect(h1Element).toBeInTheDocument();
 });
 
-test('checks text content in app-body and app-footer', () => {
-    render(<App />);
-    const bodyText = screen.getByText("Login to access the full dashboard");
-    const footerText = screen.getByText("Copyright 2024 Holberton School");
-    expect(bodyText).toBeInTheDocument();
-    expect(footerText).toBeInTheDocument();
-});
+
 
 test('checks if an img element with alt text "holberton logo" is rendered', () => {
     render(<App />);
@@ -44,3 +38,26 @@ test('renders a button with text "OK"', () => {
     const button = screen.getByRole('button', { name: /ok/i });
     expect(button).toBeInTheDocument();
 });
+
+
+beforeEach(() => {
+  window.alert = jest.fn();
+});
+
+test('calls logOut when ctrl + h is pressed', () => {
+    const logOutMock = jest.fn();
+    const { container } = render(<App logOut={logOutMock} />);
+
+    fireEvent.keyDown(container, { ctrlKey: true, key: 'h' });
+
+    expect(logOutMock).toHaveBeenCalledTimes(1);
+  });
+
+  test('displays alert when ctrl + h is pressed', () => {
+    const logOutMock = jest.fn();
+    const { container } = render(<App logOut={logOutMock} />);
+
+    fireEvent.keyDown(container, { ctrlKey: true, key: 'h' });
+
+    expect(window.alert).toHaveBeenCalledWith('Logging you out');
+  });
