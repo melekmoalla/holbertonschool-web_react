@@ -42,7 +42,7 @@ class App extends Component {
   }
 
   render() {
-    const isLoggedIn = false;
+    const isLoggedIn = true;
 
   return (
     <Fragment>
