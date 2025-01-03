@@ -31,7 +31,7 @@ class NotificationItem extends Component {
 NotificationItem.propTypes = {
   id: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   html: PropTypes.object,
   markAsRead: PropTypes.func.isRequired,
 };

@@ -31,18 +31,5 @@ describe('NotificationItem component', () => {
     expect(listItem).toHaveAttribute('data-notification-type', 'urgent');
   });
 
-  test('should have color red and data-notification-type set to "urgent" when type is "urgent"', () => {
-    // Render NotificationItem with type 'urgent'
-    render(<NotificationItem type="urgent" value="Test urgent notification" />);
-
-    // Select the li element
-    const listItem = screen.getByRole('listitem');
-
-    // Check if the li element has the correct color
-    expect(listItem).toHaveStyle('color: red');
-
-    // Check if the data-notification-type attribute is set to "urgent"
-    expect(listItem).toHaveAttribute('data-notification-type', 'urgent');
-  });
   
 });
