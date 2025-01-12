@@ -5,7 +5,7 @@ const headerStyle = { backgroundColor: 'rgba(222, 181, 181, 0.27)' }; // Convert
 const rowStyle = { backgroundColor: 'rgba(245, 245, 245, 0.67)' };
 
 const CourseListRow = ({ isHeader, textFirstCell, textSecondCell }) => {
-  
+
   const style = isHeader ? headerStyle : rowStyle;
 
     return (
