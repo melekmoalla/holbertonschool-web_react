@@ -1,0 +1,27 @@
+.Notifications {
+    width: 300px;
+    background-color: white;
+    border: 1px solid #e1003c;
+    padding: 20px;
+    font-size: 14px;
+    position: relative;
+  }
+  
+  .Notifications ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .Notifications li {
+    margin-bottom: 10px;
+  }
+  
+  .Notifications li[data-priority="default"] {
+    color: black;
+  }
+  
+  .Notifications li[data-priority="urgent"] {
+    color: #e1003c;
+    font-weight: bold;
+  }
+  
