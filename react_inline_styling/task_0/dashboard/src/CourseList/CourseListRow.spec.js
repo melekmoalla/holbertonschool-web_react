@@ -26,19 +26,19 @@ describe('test compnement',() =>{
       it('applies the correct background color for header row when isHeader is true', () => {
         const { container } = render(<CourseListRow isHeader={true} textFirstCell="Header" />);
         const rowElement = container.querySelector('tr');
-        expect(rowElement).toHaveStyle('background-color: rgba(222, 181, 181, 0.27)');
+        expect(rowElement).toHaveStyle('background-color: #deb5b545');
       });
 
       if('Add a test that check when the isHeader prop is true and secondTextCell is not null, the cell background color is #deb5b545.', () => {
         const { container } = render(<CourseListRow isHeader={true} textFirstCell="Data1" textSecondCell="Data2" />);
         const rowElement = container.querySelector('tr');
-        expect(rowElement).toHaveStyle('background-color: rgba(245, 245, 245, 0.67)');
+        expect(rowElement).toHaveStyle('background-color: #deb5b545');
 
       });
       if('Add a test that check when the isHeader prop is false, the cell background color is #f5f5f5ab.', () => {
         const { container } =  render(<CourseListRow isHeader={false} textFirstCell="Data1" textSecondCell="Data2" />);
         const rowElement = container.querySelector('tr');
-        expect(rowElement).toHaveStyle('background-color: rgba(245, 245, 245, 0.67)');
+        expect(rowElement).toHaveStyle('background-color: #f5f5f5ab');
 
       });
       
