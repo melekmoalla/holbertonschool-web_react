@@ -15,26 +15,23 @@ class Login extends Component{
     };
 
 
-    this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
-    this.handleChangeEmail = this.handleChangeEmail.bind(this);
-    this.handleChangePassword = this.handleChangePassword.bind(this);
-    this.validateForm = this.validateForm.bind(this);
-
   }
 
-  handleLoginSubmit(){
+  handleLoginSubmit = (event) => {
+    event.preventDefault();
     this.setState({ isLoggedIn: true });
   }
   
-  handleChangeEmail(event) {
+  handleChangeEmail = (event) => {
     this.setState({ email: event.target.value }, this.validateForm);
-  }
+  };
 
-  handleChangePassword(event) {
+  handleChangePassword = (event) => {
     this.setState({ password: event.target.value }, this.validateForm);
-  }
+  };
 
-  validateForm() {
+
+  validateForm = () => {
     const { email, password } = this.state;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
     const isEmailValid = emailRegex.test(email);
