@@ -23,7 +23,7 @@ class Login extends Component{
   }
 
   handleLoginSubmit(){
-    this.setState({ loggedIn: true });
+    this.setState({ isLoggedIn: true });
   }
   
   handleChangeEmail(event) {
