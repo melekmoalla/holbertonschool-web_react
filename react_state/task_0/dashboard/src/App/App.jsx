@@ -35,13 +35,11 @@ class App extends Component {
   }
 
   handleDisplayDrawer() {
-    console.log('test')
-    console.log(this.state)
+
     this.setState({ displayDrawer: true });
   }
 
   handleHideDrawer() {
-    console.log('test')
     this.setState({ displayDrawer: false });
   }
 

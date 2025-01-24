@@ -12,6 +12,7 @@ class Notifications extends Component {
 
   shouldComponentUpdate(nextProps) {
     return (
+      
       nextProps.listNotifications.length > this.props.listNotifications.length ||
       nextProps.displayDrawer !== this.props.displayDrawer
     );
@@ -24,7 +25,7 @@ class Notifications extends Component {
   render() {
     const { displayDrawer, listNotifications,  handleDisplayDrawer,
       handleHideDrawer } = this.props;
-
+      {console.log(displayDrawer)}
     const menuPStyle = css(
       displayDrawer ? styles.menuItemPNoShow : styles.menuItemPShow
     );
