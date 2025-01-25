@@ -11,8 +11,6 @@ import { getLatestNotification } from "../utils/utils";
 import { StyleSheet, css } from "aphrodite";
 import newContext from '../Context/context';
 
-
-
 const listCourses = [
   { id: 1, name: "ES6", credit: 60 },
   { id: 2, name: "Webpack", credit: 20 },
@@ -27,27 +25,25 @@ const listNotifications = [
 
 document.body.style.margin = 0;
 
-
 class App extends Component {
   constructor(props) {
     super(props);
     this.handleKeyCombination = this.handleKeyCombination.bind(this);
-    this.state = {displayDrawer:false,             
+    this.state = {
+      displayDrawer: false,
       user: {
-      email: "",
-      password: "",
-      isLoggedIn: false,
+        email: "",
+        password: "",
+        isLoggedIn: false,
       },
-      logOut: this.logOut.bind(this),
+      logOut: this.logOut.bind(this)
     };
     this.handleDisplayDrawer = this.handleDisplayDrawer.bind(this);
     this.handleHideDrawer = this.handleHideDrawer.bind(this);
     this.logIn = this.logIn.bind(this);
-    
   }
 
   handleDisplayDrawer() {
-
     this.setState({ displayDrawer: true });
   }
 
@@ -58,27 +54,27 @@ class App extends Component {
   logIn(email, password) {
     this.setState({
       user: {
-        email,
-        password,
+        email: email,
+        password: password,
         isLoggedIn: true,
-      },
+      }
     });
   }
 
-  logOut(){
-   this.setState({
-    user:{
-    email: "",
-    password: "",
-    isLoggedIn: false,
-    }
-   }); 
+  logOut() {
+    this.setState({
+      user: {
+        email: "",
+        password: "",
+        isLoggedIn: false,
+      }
+    });
   }
 
   handleKeyCombination(e) {
     if (e.key === "h" && e.ctrlKey) {
       alert("Logging you out");
-      this.props.logOut();
+      this.logOut();
     }
   }
 
@@ -93,14 +89,14 @@ class App extends Component {
   render() {
     const { displayDrawer, user } = this.state;
 
-
     return (
-      <>
       <newContext.Provider value={{ user, logOut: this.state.logOut }}>
-        <Notifications listNotifications={listNotifications}
+        <Notifications
+          listNotifications={listNotifications}
           displayDrawer={displayDrawer}
           handleDisplayDrawer={this.handleDisplayDrawer}
-          handleHideDrawer={this.handleHideDrawer}/>
+          handleHideDrawer={this.handleHideDrawer}
+        />
 
         <div className={css(styles.container)}>
           <div className={css(styles.app)}>
@@ -109,7 +105,7 @@ class App extends Component {
           <div className={css(styles.appBody)}>
             {!user.isLoggedIn ? (
               <BodySectionWithMarginBottom title="Log in to continue">
-                <Login  logIn={this.logIn} />
+                <Login logIn={this.logIn} />
               </BodySectionWithMarginBottom>
             ) : (
               <BodySectionWithMarginBottom title="Course list">
@@ -136,13 +132,20 @@ class App extends Component {
             <Footer />
           </div>
         </div>
-        </newContext.Provider>
-      </>
+      </newContext.Provider>
     );
   }
 }
 
+App.defaultProps = {
+  isLoggedIn: false,
+  logOut: () => {},
+};
 
+App.propTypes = {
+  isLoggedIn: PropTypes.bool,
+  logOut: PropTypes.func,
+};
 
 const cssVars = {
   mainColor: "#e01d3f",
