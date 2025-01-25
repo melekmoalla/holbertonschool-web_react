@@ -1,30 +1,14 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import Login from "./Login";
+import { render, fireEvent } from "@testing-library/react";
+import Login from "../Login/Login";
 
-describe("Login Component", () => {
-  test("Submit button is disabled by default", () => {
-    render(<Login />);
-    const submitButton = screen.getByRole("button", { name: /submit/i });
-    expect(submitButton).toBeDisabled();
-  });
+test("logIn is called with email and password when form is submitted", () => {
+  const logIn = jest.fn();
+  const { getByLabelText, getByText } = render(<Login logIn={logIn} />);
 
-  test("Submit button becomes enabled when email and password meet criteria", () => {
-    render(<Login />);
-    const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/password/i);
-    const submitButton = screen.getByRole("button", { name: /submit/i });
+  fireEvent.change(getByLabelText(/email/i), { target: { value: "test@test.com" } });
+  fireEvent.change(getByLabelText(/password/i), { target: { value: "password123" } });
+  fireEvent.click(getByText(/log in/i));
 
-    // Initially disabled
-    expect(submitButton).toBeDisabled();
-
-    // Enter valid email and short password
-    fireEvent.change(emailInput, { target: { value: "test@example.com" } });
-    fireEvent.change(passwordInput, { target: { value: "short" } });
-    expect(submitButton).toBeDisabled();
-
-    // Enter valid email and valid password
-    fireEvent.change(passwordInput, { target: { value: "password123" } });
-    expect(submitButton).toBeEnabled();
-  });
+  expect(logIn).toHaveBeenCalledWith("test@test.com", "password123");
 });
