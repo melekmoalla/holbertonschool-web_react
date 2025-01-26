@@ -1,22 +1,28 @@
-import React, { useContext } from 'react';
+// src/Header/Header.jsx
+import React, { Component, useContext } from 'react';
 import logo from '../assets/holberton-logo.jpg';
 import { StyleSheet, css } from 'aphrodite';
 import newContext from '../Context/context';
 
-const Header = () => {
-  const { user, logOut } = useContext(newContext);
 
-  return (
+
+const Header = () => {
+  
+    const { user, logOut } = useContext(newContext);
+
+    return (
+
     <header className={css(styles.Appheader)}>
       <img src={logo} alt="holberton logo" className={css(styles.headerimg)} />
-      <h1 className={css(styles.headerh1)}>School dashboard</h1>
+      <h1 style={{ color: '#e1003c' }}>School dashboard</h1>
       {user.isLoggedIn && (
-        <section id="logoutSection">
-          <p>
-            Welcome {user.email} <button onClick={logOut}>Logout</button>
-          </p>
-        </section>
-      )}
+        
+          <section id="logoutSection">
+            <p>
+              Welcome {user.email} <button onClick={logOut}>Logout</button>
+            </p>
+          </section>
+        )}
     </header>
   );
 };
