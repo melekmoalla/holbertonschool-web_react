@@ -73,14 +73,30 @@ class Notifications extends PureComponent {
   }
 }
 
+Notifications.propTypes = {
+  displayDrawer: PropTypes.bool,
+  listNotifications: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      type: PropTypes.string.isRequired,
+      value: PropTypes.string,
+      html: PropTypes.shape({
+        __html: PropTypes.string,
+      }),
+    })
+  ),
+  handleDisplayDrawer: PropTypes.func,
+  handleHideDrawer: PropTypes.func,
+  markNotificationAsRead: PropTypes.func.isRequired,
+};
+
 Notifications.defaultProps = {
   displayDrawer: false,
   listNotifications: [],
+  handleDisplayDrawer: () => {},
+  handleHideDrawer: () => {},
 };
 
-Notifications.propTypes = {
-  displayDrawer: PropTypes.bool,
-};
 
 const cssVars = {
   mainColor: "#e01d3f",
