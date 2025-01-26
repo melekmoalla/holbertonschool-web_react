@@ -36,11 +36,22 @@ class App extends Component {
         password: "",
         isLoggedIn: false,
       },
-      logOut: this.logOut.bind(this)
+      logOut: this.logOut.bind(this),
+      notifications: listNotifications,
+      courses: listCourses,
     };
     this.handleDisplayDrawer = this.handleDisplayDrawer.bind(this);
     this.handleHideDrawer = this.handleHideDrawer.bind(this);
     this.logIn = this.logIn.bind(this);
+    this.markNotificationAsRead = this.markNotificationAsRead.bind(this);
+
+  }
+
+  markNotificationAsRead(id){
+    console.log(`Notification ${id} has been marked as read`);
+    this.setState((prevState) => ({
+      notifications: prevState.notifications.filter(notification => notification.id !== id)
+    }));
   }
 
   handleDisplayDrawer() {
@@ -87,12 +98,12 @@ class App extends Component {
   }
 
   render() {
-    const { displayDrawer, user } = this.state;
+    const { displayDrawer, user, notifications, courses } = this.state;
 
     return (
       <newContext.Provider value={{ user, logOut: this.state.logOut }}>
         <Notifications
-          listNotifications={listNotifications}
+          listNotifications={notifications}
           displayDrawer={displayDrawer}
           handleDisplayDrawer={this.handleDisplayDrawer}
           handleHideDrawer={this.handleHideDrawer}
@@ -109,7 +120,7 @@ class App extends Component {
               </BodySectionWithMarginBottom>
             ) : (
               <BodySectionWithMarginBottom title="Course list">
-                <CourseList listCourses={listCourses} />
+                <CourseList listCourses={courses} />
               </BodySectionWithMarginBottom>
             )}
           </div>
