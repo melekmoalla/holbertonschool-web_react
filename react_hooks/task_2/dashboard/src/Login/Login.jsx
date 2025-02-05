@@ -8,22 +8,22 @@ const Login = (props) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [enableSubmit, setEnableSubmit] = useState(false);
 
-  handleLoginSubmit = (event) => {
+  const handleLoginSubmit = (event) => {
     event.preventDefault();
     const { email, password } = formData;
-    this.props.logIn(email, password);
-  }
+    props.logIn(email, password); // Use props directly
+  };
   
-   handleChangeEmail = (event) => {
+  const handleChangeEmail = (event) => {
     const newEmail = event.target.value;
     setFormData((prevData) => {
       const updatedData = { ...prevData, email: newEmail };
-      validateForm(updatedData);
+      validateForm(updatedData); // Use the updated formData
       return updatedData;
     });
   };
 
-   handleChangePassword = (event) => {
+  const handleChangePassword = (event) => {
     const newPassword = event.target.value;
     setFormData((prevData) => {
       const updatedData = { ...prevData, password: newPassword };
@@ -33,13 +33,13 @@ const Login = (props) => {
   };
 
 
-  validateForm = () => {
-    const { email, password } = this.state;
+  const validateForm = (data) => {
+    const { email, password } = data;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
     const isEmailValid = emailRegex.test(email);
     const isPasswordValid = password.length >= 8;
     setEnableSubmit(isEmailValid && isPasswordValid);
-  }
+  };
 
     const { email, password } = formData;
 
@@ -50,7 +50,7 @@ const Login = (props) => {
         <p>Login to access the full dashboard</p>
         <form
           className={css(styles.Appbodyform)}
-          onSubmit={this.handleLoginSubmit}
+          onSubmit={handleLoginSubmit}
         >
           <label htmlFor="email">Email:</label>
           <input
@@ -58,7 +58,7 @@ const Login = (props) => {
             id="email"
             name="email"
             value={email}
-            onChange={this.handleChangeEmail}
+            onChange={handleChangeEmail}
           />
           <label htmlFor="password">Password:</label>
           <input
@@ -66,7 +66,7 @@ const Login = (props) => {
             id="password"
             name="password"
             value={password}
-            onChange={this.handleChangePassword}
+            onChange={handleChangePassword}
           />
           <input
             type="submit"
