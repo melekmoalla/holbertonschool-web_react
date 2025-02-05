@@ -10,16 +10,26 @@ const Login = (props) => {
 
   handleLoginSubmit = (event) => {
     event.preventDefault();
-    const { email, password } = this.state;
+    const { email, password } = formData;
     this.props.logIn(email, password);
   }
   
-  handleChangeEmail = (event) => {
-    this.setState({ email: event.target.value }, this.validateForm);
+   handleChangeEmail = (event) => {
+    const newEmail = event.target.value;
+    setFormData((prevData) => {
+      const updatedData = { ...prevData, email: newEmail };
+      validateForm(updatedData);
+      return updatedData;
+    });
   };
 
-  handleChangePassword = (event) => {
-    this.setState({ password: event.target.value }, this.validateForm);
+   handleChangePassword = (event) => {
+    const newPassword = event.target.value;
+    setFormData((prevData) => {
+      const updatedData = { ...prevData, password: newPassword };
+      validateForm(updatedData);
+      return updatedData;
+    });
   };
 
 
@@ -28,8 +38,7 @@ const Login = (props) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
     const isEmailValid = emailRegex.test(email);
     const isPasswordValid = password.length >= 8;
-
-    this.setState({ enableSubmit: isEmailValid && isPasswordValid });
+    setEnableSubmit(isEmailValid && isPasswordValid);
   }
 
     const { email, password } = formData;

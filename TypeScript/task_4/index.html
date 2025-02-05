@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test TypeScript in Browser</title>
+</head>
+<body>
+  <h1>TypeScript to JavaScript Test</h1>
+
+  <script src="dist/subjects/Teacher.js"></script>
+  <script src="dist/subjects/Subject.js"></script>
+  <script src="dist/subjects/Cpp.js"></script>
+  <script src="dist/subjects/React.js"></script>
+  <script src="dist/subjects/Java.js"></script>
+
+  <script>
+    // Example of how you might use the classes from your compiled JavaScript
+    const teacher = { firstName: "John", lastName: "Doe", experienceTeachingC: 3 };
+    const cppSubject = new Subjects.Cpp(teacher);
+    console.log(cppSubject.getAvailableTeacher());
+  </script>
+</body>
+</html>
