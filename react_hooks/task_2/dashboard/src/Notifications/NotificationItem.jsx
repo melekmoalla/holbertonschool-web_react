@@ -1,9 +1,7 @@
-// src/Notifications/NotificationItem.jsx
-import React, { PureComponent } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 
 function NotificationItem({ id, type, html, value, markAsRead }) {
-
   const handleClick = () => {
     markAsRead(id);
   };
@@ -23,8 +21,10 @@ function NotificationItem({ id, type, html, value, markAsRead }) {
 NotificationItem.propTypes = {
   id: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  html: PropTypes.object,
+  value: PropTypes.string,
+  html: PropTypes.shape({
+    __html: PropTypes.string,
+  }),
   markAsRead: PropTypes.func.isRequired,
 };
 
