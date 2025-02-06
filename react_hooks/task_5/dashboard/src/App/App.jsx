@@ -1,41 +1,37 @@
-import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
-import Notifications from "../Notifications/Notifications";
-import Header from "../Header/Header";
-import BodySection from "../BodySection/BodySection";
-import BodySectionWithMarginBottom from "../BodySection/BodySectionWithMarginBottom";
-import Login from "../Login/Login";
-import CourseList from "../CourseList/CourseList";
-import Footer from "../Footer/Footer";
-import PropTypes from "prop-types";
-import { getLatestNotification } from "../utils/utils";
-import { StyleSheet, css } from "aphrodite";
-import newContext from '../Context/context';
+import React, { useReducer, useEffect, useCallback } from 'react';
+import axios from 'axios';
+import Notifications from '../Notifications/Notifications';
+import Header from '../Header/Header';
+import BodySection from '../BodySection/BodySection';
+import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
+import Login from '../Login/Login';
+import CourseList from '../CourseList/CourseList';
+import Footer from '../Footer/Footer';
+import PropTypes from 'prop-types';
+import { getLatestNotification } from '../utils/utils';
+import { StyleSheet, css } from 'aphrodite';
+import { appReducer, initialState, APP_ACTIONS } from './appReducer';
 
 const App = () => {
-  const [displayDrawer, setDisplayDrawer] = useState(true);
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-    isLoggedIn: false,
-  });
-  const [notifications, setNotifications] = useState([]);
-  const [courses, setCourses] = useState([]);
+  const [state, dispatch] = useReducer(appReducer, initialState);
 
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
         const response = await axios.get('/notifications.json');
-        const notificationsData = response.data.map(notification => {
+        const notificationsData = response.data.map((notification) => {
           if (notification.html) {
             notification.html.__html = getLatestNotification();
           }
           return notification;
         });
-        setNotifications(notificationsData);
+        dispatch({
+          type: APP_ACTIONS.SET_NOTIFICATIONS,
+          payload: { notifications: notificationsData },
+        });
       } catch (error) {
         if (process.env.NODE_ENV === 'development') {
-          console.error("Error fetching notifications:", error);
+          console.error('Error fetching notifications:', error);
         }
       }
     };
@@ -47,55 +43,54 @@ const App = () => {
     const fetchCourses = async () => {
       try {
         const response = await axios.get('/courses.json');
-        setCourses(response.data);
+        dispatch({
+          type: APP_ACTIONS.SET_COURSES,
+          payload: { courses: response.data },
+        });
       } catch (error) {
         if (process.env.NODE_ENV === 'development') {
-          console.error("Error fetching courses:", error);
+          console.error('Error fetching courses:', error);
         }
       }
     };
 
-    if (user.isLoggedIn) {
+    if (state.user.isLoggedIn) {
       fetchCourses();
     }
-  }, [user]);
+  }, [state.user]);
 
   const handleDisplayDrawer = useCallback(() => {
-    setDisplayDrawer(true);
+    dispatch({ type: APP_ACTIONS.TOGGLE_DRAWER });
   }, []);
 
   const handleHideDrawer = useCallback(() => {
-    setDisplayDrawer(false);
+    dispatch({ type: APP_ACTIONS.TOGGLE_DRAWER });
   }, []);
 
   const logIn = useCallback((email, password) => {
-    setUser({
-      email: email,
-      password: password,
-      isLoggedIn: true,
+    dispatch({
+      type: APP_ACTIONS.LOGIN,
+      payload: { email, password },
     });
   }, []);
 
   const logOut = useCallback(() => {
-    setUser({
-      email: "",
-      password: "",
-      isLoggedIn: false,
-    });
+    dispatch({ type: APP_ACTIONS.LOGOUT });
   }, []);
 
   const markNotificationAsRead = useCallback((id) => {
     console.log(`Notification ${id} has been marked as read`);
-    setNotifications((prevNotifications) =>
-      prevNotifications.filter((notification) => notification.id !== id)
-    );
+    dispatch({
+      type: APP_ACTIONS.MARK_NOTIFICATION_READ,
+      payload: { id },
+    });
   }, []);
 
   return (
-    <newContext.Provider value={{ user, logOut }}>
+    <>
       <Notifications
-        listNotifications={notifications}
-        displayDrawer={displayDrawer}
+        listNotifications={state.notifications}
+        displayDrawer={state.displayDrawer}
         handleDisplayDrawer={handleDisplayDrawer}
         handleHideDrawer={handleHideDrawer}
         markNotificationAsRead={markNotificationAsRead}
@@ -103,16 +98,16 @@ const App = () => {
 
       <div className={css(styles.container)}>
         <div className={css(styles.app)}>
-          <Header />
+          <Header user={state.user} logOut={logOut} />
         </div>
         <div className={css(styles.appBody)}>
-          {!user.isLoggedIn ? (
+          {!state.user.isLoggedIn ? (
             <BodySectionWithMarginBottom title="Log in to continue">
               <Login logIn={logIn} />
             </BodySectionWithMarginBottom>
           ) : (
             <BodySectionWithMarginBottom title="Course list">
-              <CourseList listCourses={courses} />
+              <CourseList listCourses={state.courses} />
             </BodySectionWithMarginBottom>
           )}
         </div>
@@ -120,22 +115,21 @@ const App = () => {
           <p>
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of
-            type and scrambled it to make a type specimen book. It has
-            survived not only five centuries, but also the leap into
-            electronic typesetting, remaining essentially unchanged. It was
-            popularised in the 1960s with the release of Letraset sheets
-            containing Lorem Ipsum passages, and more recently with desktop
-            publishing software like Aldus PageMaker including versions of
-            Lorem Ipsum.
+            ever since the 1500s, when an unknown printer took a galley of type
+            and scrambled it to make a type specimen book. It has survived not
+            only five centuries, but also the leap into electronic typesetting,
+            remaining essentially unchanged. It was popularised in the 1960s
+            with the release of Letraset sheets containing Lorem Ipsum passages,
+            and more recently with desktop publishing software like Aldus
+            PageMaker including versions of Lorem Ipsum.
           </p>
         </BodySection>
 
         <div className={css(styles.footer)}>
-          <Footer />
+          <Footer user={state.user} />
         </div>
       </div>
-    </newContext.Provider>
+    </>
   );
 };
 
@@ -150,18 +144,18 @@ App.propTypes = {
 };
 
 const cssVars = {
-  mainColor: "#e01d3f",
+  mainColor: '#e01d3f',
 };
 
 const screenSize = {
-  small: "@media screen and (max-width: 900px)",
+  small: '@media screen and (max-width: 900px)',
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: "calc(100% - 16px)",
-    marginLeft: "8px",
-    marginRight: "8px",
+    width: 'calc(100% - 16px)',
+    marginLeft: '8px',
+    marginRight: '8px',
   },
 
   app: {
@@ -169,20 +163,20 @@ const styles = StyleSheet.create({
   },
 
   appBody: {
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
   },
 
   footer: {
     borderTop: `3px solid ${cssVars.mainColor}`,
-    width: "100%",
-    display: "flex",
-    justifyContent: "center",
-    position: "fixed",
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    position: 'fixed',
     bottom: 0,
-    fontStyle: "italic",
+    fontStyle: 'italic',
     [screenSize.small]: {
-      position: "static",
+      position: 'static',
     },
   },
 });

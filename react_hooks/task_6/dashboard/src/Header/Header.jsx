@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import logo from '../assets/holberton-logo.jpg';
 import { StyleSheet, css } from 'aphrodite';
+import newContext from '../Context/context';
 
-const Header = ({ user, logOut }) => {
+const Header = () => {
+  const { user, logOut } = useContext(newContext);
+
   return (
     <header className={css(styles.Appheader)}>
       <img src={logo} alt="Holberton logo" />
