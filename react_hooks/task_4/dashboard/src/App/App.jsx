@@ -1,4 +1,5 @@
-import React, { useState , useContext, useCallback  } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import axios from "axios";
 import Notifications from "../Notifications/Notifications";
 import Header from "../Header/Header";
 import BodySection from "../BodySection/BodySection";
@@ -11,67 +12,87 @@ import { getLatestNotification } from "../utils/utils";
 import { StyleSheet, css } from "aphrodite";
 import newContext from '../Context/context';
 
-const listCourses = [
-  { id: 1, name: "ES6", credit: 60 },
-  { id: 2, name: "Webpack", credit: 20 },
-  { id: 3, name: "React", credit: 40 },
-];
+const App = () => {
+  const [displayDrawer, setDisplayDrawer] = useState(true);
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+    isLoggedIn: false,
+  });
+  const [notifications, setNotifications] = useState([]);
+  const [courses, setCourses] = useState([]);
 
-const listNotifications = [
-  { id: 1, type: "default", value: "New course available" },
-  { id: 2, type: "urgent", value: "New resume available" },
-  { id: 3, type: "urgent", html: { __html: getLatestNotification() } },
-];
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const response = await axios.get('/notifications.json');
+        const notificationsData = response.data.map(notification => {
+          if (notification.html) {
+            notification.html.__html = getLatestNotification();
+          }
+          return notification;
+        });
+        setNotifications(notificationsData);
+      } catch (error) {
+        if (process.env.NODE_ENV === 'development') {
+          console.error("Error fetching notifications:", error);
+        }
+      }
+    };
 
-document.body.style.margin = 0;
+    fetchNotifications();
+  }, []);
 
-const App =() => {
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get('/courses.json');
+        setCourses(response.data);
+      } catch (error) {
+        if (process.env.NODE_ENV === 'development') {
+          console.error("Error fetching courses:", error);
+        }
+      }
+    };
 
-    const [displayDrawer, setDisplayDrawer] = useState(true);
-    const [user, setUser] = useState({
+    if (user.isLoggedIn) {
+      fetchCourses();
+    }
+  }, [user]);
+
+  const handleDisplayDrawer = useCallback(() => {
+    setDisplayDrawer(true);
+  }, []);
+
+  const handleHideDrawer = useCallback(() => {
+    setDisplayDrawer(false);
+  }, []);
+
+  const logIn = useCallback((email, password) => {
+    setUser({
+      email: email,
+      password: password,
+      isLoggedIn: true,
+    });
+  }, []);
+
+  const logOut = useCallback(() => {
+    setUser({
       email: "",
       password: "",
       isLoggedIn: false,
     });
-    const [notifications, setNotifications] = useState(listNotifications);
+  }, []);
 
-    const handleDisplayDrawer = useCallback(() => {
-      setDisplayDrawer(true);
-    }, []);
-  
-    const handleHideDrawer = useCallback(() => {
-      setDisplayDrawer(false);
-    }, []);
+  const markNotificationAsRead = useCallback((id) => {
+    console.log(`Notification ${id} has been marked as read`);
+    setNotifications((prevNotifications) =>
+      prevNotifications.filter((notification) => notification.id !== id)
+    );
+  }, []);
 
-    const logIn = useCallback((email, password) => {
-      setUser({
-        email: email,
-        password: password,
-        isLoggedIn: true,
-      });
-    }, []);
-
-    const logOut = useCallback(() => {
-      setUser({
-        email: "",
-        password: "",
-        isLoggedIn: false,
-      });
-    }, []);
-
-
-
-
-
-    const markNotificationAsRead = useCallback((id) => {
-      console.log(`Notification ${id} has been marked as read`);
-      setNotifications((prevNotifications) =>
-        prevNotifications.filter((notification) => notification.id !== id)
-      );
-    }, []);
-
-    return (
-      <newContext.Provider value={{ user, logOut }}>
+  return (
+    <newContext.Provider value={{ user, logOut }}>
       <Notifications
         listNotifications={notifications}
         displayDrawer={displayDrawer}
@@ -80,44 +101,43 @@ const App =() => {
         markNotificationAsRead={markNotificationAsRead}
       />
 
-        <div className={css(styles.container)}>
-          <div className={css(styles.app)}>
-            <Header />
-          </div>
-          <div className={css(styles.appBody)}>
-            {!user.isLoggedIn ? (
-              <BodySectionWithMarginBottom title="Log in to continue">
-                <Login logIn={logIn} />
-              </BodySectionWithMarginBottom>
-            ) : (
-              <BodySectionWithMarginBottom title="Course list">
-                <CourseList listCourses={courses} />
-              </BodySectionWithMarginBottom>
-            )}
-          </div>
-          <BodySection title="News from the School">
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
-            </p>
-          </BodySection>
-
-          <div className={css(styles.footer)}>
-            <Footer />
-          </div>
+      <div className={css(styles.container)}>
+        <div className={css(styles.app)}>
+          <Header />
         </div>
-      </newContext.Provider>
-    );
-  }
+        <div className={css(styles.appBody)}>
+          {!user.isLoggedIn ? (
+            <BodySectionWithMarginBottom title="Log in to continue">
+              <Login logIn={logIn} />
+            </BodySectionWithMarginBottom>
+          ) : (
+            <BodySectionWithMarginBottom title="Course list">
+              <CourseList listCourses={courses} />
+            </BodySectionWithMarginBottom>
+          )}
+        </div>
+        <BodySection title="News from the School">
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s, when an unknown printer took a galley of
+            type and scrambled it to make a type specimen book. It has
+            survived not only five centuries, but also the leap into
+            electronic typesetting, remaining essentially unchanged. It was
+            popularised in the 1960s with the release of Letraset sheets
+            containing Lorem Ipsum passages, and more recently with desktop
+            publishing software like Aldus PageMaker including versions of
+            Lorem Ipsum.
+          </p>
+        </BodySection>
 
+        <div className={css(styles.footer)}>
+          <Footer />
+        </div>
+      </div>
+    </newContext.Provider>
+  );
+};
 
 App.defaultProps = {
   isLoggedIn: false,
