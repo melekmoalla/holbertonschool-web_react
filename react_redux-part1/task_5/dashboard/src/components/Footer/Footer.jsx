@@ -4,11 +4,10 @@ import { StyleSheet, css } from 'aphrodite';
 import { getFooterCopy, getCurrentYear } from '../../utils/utils';
 
 const Footer = () => {
-  // Get isLoggedIn state from Redux store
-  const { isLoggedIn } = useSelector(state => state.auth);
+  const { isLoggedIn } = useSelector((state) => state.auth);
 
   return (
-    <footer className={css(styles.footer)} data-testid="footer">
+    <footer className={css(styles.footer)}>
       <p className={css(styles.copyright)}>
         Copyright {getCurrentYear()} - {getFooterCopy(true)}
       </p>
