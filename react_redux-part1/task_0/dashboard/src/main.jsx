@@ -1,9 +1,13 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from "./App/App.jsx";
+import { combineReducers } from '@reduxjs/toolkit';
+import authReducer from './features/auth/authSlice';
+import notificationsReducer from './features/notifications/notificationsSlice';
+import coursesReducer from './features/courses/coursesSlice';
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+const rootReducer = combineReducers({
+  auth: authReducer,
+  notifications: notificationsReducer,
+  courses: coursesReducer,
+  ui: uiReducer
+});
+
+export default rootReducer;
