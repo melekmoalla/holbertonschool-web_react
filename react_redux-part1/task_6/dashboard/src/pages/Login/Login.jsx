@@ -1,98 +1,92 @@
-// src/Login/Login.jsx
-import React, { useState } from 'react';
-import WithLogging from '../HOC/WithLogging';
+import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
-import useLogin from '../hooks/useLogin';
+import useLogin from '../../hooks/useLogin';
 
+const Login = () => {
+  const {
+    formData,
+    enableSubmit,
+    handleChangeEmail,
+    handleChangePassword,
+    handleSubmit
+  } = useLogin();
 
-const Login = (props) => {
-
-
-    const {
-      formData,
-      enableSubmit,
-      handleChangeEmail,
-      handleChangePassword,
-      handleLoginSubmit,
-    } = useLogin(props.logIn);
-
-
-    const { email, password } = formData;
-
-
-    return (
-      <div className={css(styles.Appbody)}>
-        <div className={css(styles.longbr)}></div>
-        <p>Login to access the full dashboard</p>
-        <form
-          className={css(styles.Appbodyform)}
-          onSubmit={handleLoginSubmit}
-        >
+  return (
+    <div className={css(styles.loginContainer)}>
+      <p>Login to access the full dashboard</p>
+      <form onSubmit={handleSubmit} className={css(styles.form)}>
+        <div className={css(styles.inputGroup)}>
           <label htmlFor="email">Email:</label>
           <input
             type="email"
             id="email"
             name="email"
-            value={email}
+            value={formData.email}
             onChange={handleChangeEmail}
+            className={css(styles.input)}
           />
+        </div>
+        <div className={css(styles.inputGroup)}>
           <label htmlFor="password">Password:</label>
           <input
             type="password"
             id="password"
             name="password"
-            value={password}
+            value={formData.password}
             onChange={handleChangePassword}
+            className={css(styles.input)}
           />
-          <input
-            type="submit"
-            value="OK"
-            disabled={!enableSubmit}
-            className={css(styles.button, !enableSubmit && styles.disabled)}
-          />
-        </form>
-      </div>
+        </div>
+        <button
+          type="submit"
+          disabled={!enableSubmit}
+          className={css(styles.button, !enableSubmit && styles.buttonDisabled)}
+        >
+          OK
+        </button>
+      </form>
+    </div>
   );
 };
 
-
 const styles = StyleSheet.create({
-  Appbody: {
-    marginTop: '20px',
+  loginContainer: {
+    padding: '20px',
   },
-
-  longbr: {
-    borderTop: '1px solid red',
-    marginBottom: '20px',
-  },
-  
-  Appbodyform: {
+  form: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '10px',
-    marginTop: '20px',
+    gap: '20px',
+    maxWidth: '400px',
   },
-  
+  inputGroup: {
+    display: 'flex',
+    gap: '10px',
+    alignItems: 'center',
+  },
+  input: {
+    padding: '5px',
+    borderRadius: '3px',
+    border: '1px solid #ccc',
+  },
   button: {
-    marginTop: '15px',
-    padding: '10px',
-    fontSize: '16px',
-    backgroundColor: '#007bff',
+    backgroundColor: '#0066cc',
     color: 'white',
+    padding: '8px 16px',
     border: 'none',
+    borderRadius: '4px',
     cursor: 'pointer',
-    '@media (max-width: 900px)': {
-      fontSize: '14px',
-    },
     ':hover': {
-      backgroundColor: '#0056b3',
+      backgroundColor: '#0052a3',
     },
-  }, 
-  disabled: {
-    backgroundColor: "#c0c0c0",
-    cursor: "not-allowed",
+  },
+  buttonDisabled: {
+    backgroundColor: '#cccccc',
+    cursor: 'not-allowed',
+    ':hover': {
+      backgroundColor: '#cccccc',
+    },
   },
 });
 
-
-export default WithLogging(Login);
+export default Login;

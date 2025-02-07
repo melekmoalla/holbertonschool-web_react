@@ -1,92 +1,67 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import CourseListRow from './CourseListRow/CourseListRow';
+import WithLogging from '../components/HOC/WithLogging';
 import { StyleSheet, css } from 'aphrodite';
-import useLogin from '../../hooks/useLogin';
 
-const Login = () => {
-  const {
-    formData,
-    enableSubmit,
-    handleChangeEmail,
-    handleChangePassword,
-    handleSubmit
-  } = useLogin();
 
-  return (
-    <div className={css(styles.loginContainer)}>
-      <p>Login to access the full dashboard</p>
-      <form onSubmit={handleSubmit} className={css(styles.form)}>
-        <div className={css(styles.inputGroup)}>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChangeEmail}
-            className={css(styles.input)}
-          />
-        </div>
-        <div className={css(styles.inputGroup)}>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChangePassword}
-            className={css(styles.input)}
-          />
-        </div>
-        <button
-          type="submit"
-          disabled={!enableSubmit}
-          className={css(styles.button, !enableSubmit && styles.buttonDisabled)}
-        >
-          OK
-        </button>
-      </form>
-    </div>
+const CourseList = ({ courses }) => {
+    return ( 
+        <table id= "CourseList" className={css(styles.CourseList)}>
+            <thead>
+                <CourseListRow textFirstCell="Available courses"  isHeader={true} />
+                <CourseListRow textFirstCell="Course name" textSecondCell="Credit" isHeader={true}/>
+            </thead>
+            <tbody>
+            {courses.length === 0 ? (
+          <CourseListRow textFirstCell="No course available yet" isHeader={false} />
+            ) : (
+          courses.map((course) => (
+            <CourseListRow
+              key={course.id}
+              textFirstCell={course.name}
+              textSecondCell={String(course.credit)}
+              isHeader={false}
+            />
+          ))
+        )}
+      </tbody>
+    </table>
   );
 };
 
+CourseList.propTypes = {
+    courses: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        credit: PropTypes.number.isRequired,
+      })
+    ),
+  };
+  
+CourseList.defaultProps = {
+courses: [],
+};
+
 const styles = StyleSheet.create({
-  loginContainer: {
-    padding: '20px',
+  CourseList: {
+    width: '100%',
+    border: '1px solid #ddd',
+    margin: '20px 0',
+    textAlign: 'left',
+    borderCollapse: 'collapse',
   },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-    maxWidth: '400px',
+
+  CourseListThTd: {
+    border: '1px solid #ddd',
+    padding: '8px',
   },
-  inputGroup: {
-    display: 'flex',
-    gap: '10px',
-    alignItems: 'center',
-  },
-  input: {
-    padding: '5px',
-    borderRadius: '3px',
-    border: '1px solid #ccc',
-  },
-  button: {
-    backgroundColor: '#0066cc',
-    color: 'white',
-    padding: '8px 16px',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    ':hover': {
-      backgroundColor: '#0052a3',
-    },
-  },
-  buttonDisabled: {
-    backgroundColor: '#cccccc',
-    cursor: 'not-allowed',
-    ':hover': {
-      backgroundColor: '#cccccc',
-    },
+
+  CourseListHeader: {
+    backgroundColor: '#f4f4f4',
   },
 });
 
-export default Login; 
+
+export default WithLogging(CourseList);
