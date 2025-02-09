@@ -1,23 +1,21 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import CourseListRow from './CourseListRow/CourseListRow';
-import WithLogging from '../../components/HOC/WithLogging';
+import WithLogging from '../components/HOC/WithLogging';
 import { StyleSheet, css } from 'aphrodite';
 
-const CourseList = () => {
-  // Get courses from Redux store
-  const courses = useSelector(state => state.courses.courses);
 
-  return ( 
-    <table id="CourseList" className={css(styles.CourseList)}>
-      <thead>
-        <CourseListRow textFirstCell="Available courses" isHeader={true} />
-        <CourseListRow textFirstCell="Course name" textSecondCell="Credit" isHeader={true}/>
-      </thead>
-      <tbody>
-        {courses.length === 0 ? (
+const CourseList = ({ courses }) => {
+    return ( 
+        <table id= "CourseList" className={css(styles.CourseList)}>
+            <thead>
+                <CourseListRow textFirstCell="Available courses"  isHeader={true} />
+                <CourseListRow textFirstCell="Course name" textSecondCell="Credit" isHeader={true}/>
+            </thead>
+            <tbody>
+            {courses.length === 0 ? (
           <CourseListRow textFirstCell="No course available yet" isHeader={false} />
-        ) : (
+            ) : (
           courses.map((course) => (
             <CourseListRow
               key={course.id}
@@ -30,6 +28,20 @@ const CourseList = () => {
       </tbody>
     </table>
   );
+};
+
+CourseList.propTypes = {
+    courses: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        credit: PropTypes.number.isRequired,
+      })
+    ),
+  };
+  
+CourseList.defaultProps = {
+courses: [],
 };
 
 const styles = StyleSheet.create({
@@ -50,5 +62,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#f4f4f4',
   },
 });
+
 
 export default WithLogging(CourseList);
