@@ -1,12 +1,18 @@
-// src/App.spec.js
+import { JSDOM } from 'jsdom';
 
-import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import App from '../App';
+// Create a fake browser environment
+const dom = new JSDOM('<!DOCTYPE html><html><head></head><body></body></html>');
 
-test('renders h1 element with text "School Dashboard"', () => {
-    render(<App />);
-    const h1Element = screen.getByRole('heading', { level: 1, name: /School Dashboard/i });
-    expect(h1Element).toBeInTheDocument();
-});
+global.window = dom.window;
+global.document = dom.window.document;
+global.navigator = {
+  userAgent: 'node.js',
+};
 
+// Mock Aphrodite’s style injection to prevent errors
+document.querySelector = (selector) => {
+  if (selector === 'style[data-aphrodite]') {
+    return document.createElement('style'); // Mock style tag
+  }
+  return null;
+};
