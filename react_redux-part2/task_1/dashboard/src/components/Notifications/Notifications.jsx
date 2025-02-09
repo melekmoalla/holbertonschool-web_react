@@ -3,10 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, css } from 'aphrodite';
 import NotificationItem from '../../components/NotificationItem/NotificationItem';
 import { markAsRead } from '../../features/notifications/notificationsSlice';
+import './Notifications.css';
 
 const Notifications = () => {
   const dispatch = useDispatch();
-  const { notifications, loading } = useSelector(state => state.notifications);
+  const { notifications = [], loading, error } = useSelector(state => state.notifications);
   const notificationsRef = useRef(null);
 
   const handleToggleDrawer = () => {
@@ -15,6 +16,35 @@ const Notifications = () => {
 
   const handleMarkAsRead = (id) => {
     dispatch(markAsRead(id));
+  };
+
+  const renderNotifications = () => {
+    if (loading) {
+      return <p className={css(styles.loadingText)}>Loading notifications...</p>;
+    }
+
+    if (error) {
+      return <p className={css(styles.errorText)}>Error loading notifications</p>;
+    }
+
+    if (!Array.isArray(notifications) || notifications.length === 0) {
+      return (
+        <NotificationItem
+          type="default"
+          value="No notifications available"
+        />
+      );
+    }
+
+    return notifications.map(notification => (
+      <NotificationItem
+        key={notification.id}
+        type={notification.type}
+        value={notification.value}
+        html={notification.html}
+        markAsRead={() => handleMarkAsRead(notification.id)}
+      />
+    ));
   };
 
   return (
@@ -33,71 +63,21 @@ const Notifications = () => {
         >
           ×
         </button>
-        {loading ? (
-          <p className={css(styles.loadingText)}>Loading notifications...</p>
-        ) : (
-          <>
-            <p>Here is the list of notifications</p>
-            <ul className={css(styles.notificationsList)}>
-              {notifications.length === 0 ? (
-                <NotificationItem
-                  type="default"
-                  value="No notifications available"
-                />
-              ) : (
-                notifications.map(notification => (
-                  <NotificationItem
-                    key={notification.id}
-                    type={notification.type}
-                    value={notification.value}
-                    html={notification.html}
-                    markAsRead={() => handleMarkAsRead(notification.id)}
-                  />
-                ))
-              )}
-            </ul>
-          </>
-        )}
+        <p>Here is the list of notifications</p>
+        <ul className={css(styles.notificationsList)}>
+          {renderNotifications()}
+        </ul>
       </div>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  menuItem: {
-    cursor: 'pointer',
-    padding: '8px',
-    ':hover': {
-      textDecoration: 'underline'
-    }
-  },
-  notifications: {
-    position: 'absolute',
-    top: '40px',
-    right: '8px',
-    padding: '16px',
-    backgroundColor: 'white',
-    border: '1px dashed red',
-    transition: 'opacity 0.3s ease-in-out, visibility 0.3s ease-in-out'
-  },
-  closeButton: {
-    position: 'absolute',
-    top: '8px',
-    right: '8px',
-    background: 'none',
-    border: 'none',
-    fontSize: '20px',
-    cursor: 'pointer'
-  },
-  loadingText: {
+  // ...existing styles...
+  errorText: {
+    color: 'red',
     textAlign: 'center',
-    color: '#666',
     fontStyle: 'italic'
-  },
-  notificationsList: {
-    listStyle: 'none',
-    padding: 0,
-    margin: 0
   }
 });
 
