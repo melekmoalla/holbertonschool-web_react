@@ -1,9 +1,8 @@
 import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, css } from 'aphrodite';
-import NotificationItem from './NotificationItem';
+import NotificationItem from '../../components/NotificationItem/NotificationItem';
 import { markAsRead } from '../../features/notifications/notificationsSlice';
-import './Notifications.css';
 
 const Notifications = () => {
   const dispatch = useDispatch();

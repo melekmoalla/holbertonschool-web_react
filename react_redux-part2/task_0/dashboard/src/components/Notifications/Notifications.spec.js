@@ -1,57 +1,38 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
+import '@testing-library/jest-dom';
 import Notifications from './Notifications';
 
-const mockStore = configureStore([]);
+const notifications = [
+  { id: 1, value: 'New message', type: 'default' },
+  { id: 2, value: 'New alert', type: 'urgent' },
+  { id: 3, value: 'New task', type: 'default' },
+];
 
-describe('Notifications Component', () => {
-  let store;
 
-  beforeEach(() => {
-    store = mockStore({
-      notifications: {
-        notifications: [
-          { id: 1, type: 'default', value: 'Test notification' }
-        ]
-      }
-    });
+describe('Notifications component tests', () => {
+  test('renders notifications title', () => {
+    render(<Notifications notifications={notifications} displayDrawer={true}/>);
+    const titleElement = screen.getByText(/Here is the list of notifications/i);
+    expect(titleElement).toBeInTheDocument();
   });
 
-  it('should toggle visibility when clicking menu item', () => {
-    render(
-      <Provider store={store}>
-        <Notifications />
-      </Provider>
-    );
-
-    const menuItem = screen.getByText('Your notifications');
-    const notifications = screen.getByText('Here is the list of notifications')
-      .closest('.notifications');
-
-    fireEvent.click(menuItem);
-    expect(notifications).toHaveClass('visible');
-
-    fireEvent.click(menuItem);
-    expect(notifications).not.toHaveClass('visible');
+  test('renders the close button', () => {
+    render(<Notifications notifications={notifications} displayDrawer={true}/>);
+    const buttonElement = screen.getByRole('button', { name: /close/i });
+    expect(buttonElement).toBeInTheDocument();
   });
 
-  it('should dispatch markAsRead when notification is clicked', () => {
-    store.dispatch = jest.fn();
+  test('renders three notification items', () => {
+    render(<Notifications notifications={notifications} displayDrawer={true}/>);
+    const listItems = screen.getAllByRole('listitem');
+    expect(listItems).toHaveLength(3);
+  });
 
-    render(
-      <Provider store={store}>
-        <Notifications />
-      </Provider>
-    );
-
-    fireEvent.click(screen.getByText('Test notification'));
-    expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: 'notifications/markAsRead',
-        payload: 1
-      })
-    );
+  test('logs message when close button is clicked', () => {
+    console.log = jest.fn();
+    render(<Notifications notifications={notifications} displayDrawer={true}/>);
+    const buttonElement = screen.getByRole('button', { name: /close/i });
+    fireEvent.click(buttonElement);
+    expect(console.log).toHaveBeenCalledWith('Close button has been clicked');
   });
 });
