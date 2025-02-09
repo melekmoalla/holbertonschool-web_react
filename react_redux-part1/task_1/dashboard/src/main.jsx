@@ -1,13 +1,13 @@
-import { combineReducers } from '@reduxjs/toolkit';
-import authReducer from './features/auth/authSlice';
-import notificationsReducer from './features/notifications/notificationsSlice';
-import coursesReducer from './features/courses/coursesSlice';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
+import store from './app/store';
+import App from './App';
 
-const rootReducer = combineReducers({
-  auth: authReducer,
-  notifications: notificationsReducer,
-  courses: coursesReducer,
-  ui: uiReducer
-});
-
-export default rootReducer;
+createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>
+);

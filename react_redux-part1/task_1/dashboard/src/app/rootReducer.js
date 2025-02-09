@@ -6,7 +6,7 @@ import coursesReducer from '../features/courses/coursesSlice';
 const rootReducer = combineReducers({
   auth: authReducer,
   notifications: notificationsReducer,
-  courses: coursesReducer,
+  courses: coursesReducer
 });
 
 export default rootReducer;
