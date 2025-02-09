@@ -1,0 +1,9 @@
+.notifications {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .notifications:not(.visible) {
+    opacity: 0;
+    visibility: hidden;
+  }
