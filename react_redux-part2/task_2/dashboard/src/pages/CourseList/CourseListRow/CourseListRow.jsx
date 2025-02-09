@@ -1,46 +1,61 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { StyleSheet, css } from 'aphrodite';
 
-const headerStyle = { backgroundColor: '#deb5b545' };
-const rowStyle = { backgroundColor: '#f5f5f5ab' };
+const CourseListRow = ({ 
+  textFirstCell, 
+  textSecondCell, 
+  isHeader, 
+  isSelected,
+  onChangeRow 
+}) => {
+  const handleCheckboxChange = (event) => {
+    onChangeRow(event.target.checked);
+  };
 
-const CourseListRow = ({ isHeader, textFirstCell, textSecondCell }) => {
-
-  const style = isHeader ? headerStyle : rowStyle;
-
-    return (
-      <tr style={style}>
-          {isHeader ? (
-            textSecondCell === null ? (
-              <th colSpan="2">{textFirstCell}</th>
-            ) : (
-              <>
-                <th>{textFirstCell}</th>
-                <th>{textSecondCell}</th>
-              </>
-            )
-          ) : (
-            <>
-              <td>{textFirstCell}</td>
-              <td>{textSecondCell}</td>
-            </>
-          )}
-        </tr>
-      );
-    };
-
-
+  return (
+    <tr className={css(isHeader ? styles.headerRow : styles.defaultRow)}>
+      <td>
+        {!isHeader && (
+          <input
+            type="checkbox"
+            checked={isSelected}
+            onChange={handleCheckboxChange}
+            className={css(styles.checkbox)}
+          />
+        )}
+        {textFirstCell}
+      </td>
+      <td>{textSecondCell}</td>
+    </tr>
+  );
+};
 
 CourseListRow.propTypes = {
-isHeader: PropTypes.bool,
-textFirstCell: PropTypes.string,
-textSecondCell: PropTypes.string,
+  textFirstCell: PropTypes.string.isRequired,
+  textSecondCell: PropTypes.string,
+  isHeader: PropTypes.bool,
+  isSelected: PropTypes.bool,
+  onChangeRow: PropTypes.func
 };
 
 CourseListRow.defaultProps = {
-isHeader: false,
-textFirstCell: '',
-textSecondCell: null,
+  textSecondCell: '',
+  isHeader: false,
+  isSelected: false,
+  onChangeRow: () => {}
 };
+
+const styles = StyleSheet.create({
+  headerRow: {
+    backgroundColor: '#deb5b545'
+  },
+  defaultRow: {
+    backgroundColor: '#f5f5f5ab'
+  },
+  checkbox: {
+    marginRight: '10px'
+  }
+});
 
 export default CourseListRow;
