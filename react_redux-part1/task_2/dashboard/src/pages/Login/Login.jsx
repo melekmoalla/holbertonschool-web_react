@@ -1,8 +1,8 @@
 // src/Login/Login.jsx
 import React, { useState } from 'react';
-import WithLogging from '../HOC/WithLogging';
+import WithLogging from '../../components/HOC/WithLogging';
 import { StyleSheet, css } from 'aphrodite';
-import useLogin from '../hooks/useLogin';
+import useLogin from '../../hooks/useLogin';
 
 
 const Login = (props) => {

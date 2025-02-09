@@ -2,7 +2,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import Footer from './Footer';
-import { getCurrentYear, getFooterCopy } from '../utils/utils';
+import { getCurrentYear, getFooterCopy } from '../../utils/utils';
 
   it('should render the copyright text', () => {
     const { getByText } = render(<Footer />);
