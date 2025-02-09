@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CourseListRow from './CourseListRow/CourseListRow';
-import WithLogging from '../components/HOC/WithLogging';
+import WithLogging from '../../components/HOC/WithLogging';
 import { StyleSheet, css } from 'aphrodite';
 
 
