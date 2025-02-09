@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import Notifications from "./components/Notifications/Notifications";
-import Header from "./Header/Header";
+import Header from "./components/Header/Header";
 import BodySection from "./components/BodySection/BodySection";
-import BodySectionWithMarginBottom from "./components/BodySection/BodySectionWithMarginBottom";
-import Login from "./Login/Login";
-import CourseList from "./CourseList/CourseList";
-import Footer from "./Footer/Footer";
+import BodySectionWithMarginBottom from "./components/BodySectionWithMarginBottom/BodySectionWithMarginBottom";
+import Login from "./pages/Login/Login";
+import CourseList from "./pages/CourseList/CourseList";
+import Footer from "./components/Footer/Footer";
 import PropTypes from "prop-types";
 import { getLatestNotification } from "./utils/utils";
 import { StyleSheet, css } from "aphrodite";
