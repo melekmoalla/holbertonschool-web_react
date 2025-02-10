@@ -1,0 +1,19 @@
+header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #e01d3f;
+    color: white;
+  }
+  
+  header img {
+    width: 50px;
+    height: auto;
+    margin-right: 15px;
+  }
+  
+  header h1 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
