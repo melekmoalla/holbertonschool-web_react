@@ -10,11 +10,11 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'public'),
+    path: path.resolve(__dirname, 'public'),  // Output to 'public' directory
   },
   mode: 'development',
   devServer: {
-    static: './public',
+    static: path.resolve(__dirname, 'public'),
     port: 8564,
     open: true,
   },
@@ -36,10 +36,10 @@ module.exports = {
       template: 'index.html',
     }),
   ],
-  devtool: 'inline-source-map', // Helps debug in dev mode
+  devtool: 'inline-source-map',
   optimization: {
     splitChunks: {
-      chunks: 'all', // Splits Lodash & jQuery into separate files
+      chunks: 'all',
     },
   },
 };
