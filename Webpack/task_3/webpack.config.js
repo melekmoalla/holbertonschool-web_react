@@ -10,11 +10,11 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'public'),  // Output to 'public' directory
+    path: path.resolve(__dirname, 'public'),
   },
   mode: 'development',
   devServer: {
-    static: path.resolve(__dirname, 'public'),
+    static: './public',
     port: 8564,
     open: true,
   },
